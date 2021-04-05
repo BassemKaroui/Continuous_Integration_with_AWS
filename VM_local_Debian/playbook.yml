@@ -1,0 +1,40 @@
+---
+- name: VMs provisionning on AWS
+  hosts: localhost
+  connection: local
+
+  vars:
+      region_name: us-east-1
+      key_name: ec2_bassem
+      ami_id: ami-07d02ee1eeb0c996c
+      instance_type: t2.micro
+      subnetid: subnet-cc10bcaa
+
+  tasks:
+    - name: Create Gitlab EC2 instance 
+      ec2:
+        key_name: "{{ key_name }}"
+        region: "{{ region_name }}"
+        instance_type: t2.medium
+        image: "{{ ami_id }}"
+        wait: yes
+        group: bassem
+        vpc_subnet_id: "{{ subnetid }}"
+        assign_public_ip: yes
+        count: 1
+        instance_tags:
+          Name: Gitlab_bassem
+
+    - name: Create Apache2 EC2 instance 
+      ec2:
+        key_name: "{{ key_name }}"
+        region: "{{ region_name }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ ami_id }}"
+        wait: yes
+        group: bassem
+        vpc_subnet_id: "{{ subnetid }}"
+        assign_public_ip: yes
+        count: 1
+        instance_tags:
+          Name: Apache2_bassem
