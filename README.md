@@ -46,4 +46,4 @@ Une fois les deux VMs sont créées il faut modifier le fichier */etc/ansible/ho
 * `echo "[gitlab_server]" >> /etc/ansible/hosts` 
 * `echo "IP1 ansible_ssh_user=admin ansible_ssh_private_key_file=/root/projet_fondamental/keys/ec2_bassem.pem" >> /etc/ansible/hosts` . Il faut remplacer *IP1* par l'adresse IP public de la VM qui va être utilisée pour deployer GitLab.
 * `echo "[web_server]" >> /etc/ansible/hosts`
-* `echo "IP2 ansible_ssh_user=admin ansible_ssh_private_key_file=/root/projet_fondamental/keys/ec2_bassem.pem" >> /etc/ansible/hosts` . Il faut remplacer *IP2* par l'adresse IP public de la VM qui va être utilisée pour deployer Apache2q.
+* `echo "IP2 ansible_ssh_user=admin ansible_ssh_private_key_file=/root/projet_fondamental/keys/ec2_bassem.pem" >> /etc/ansible/hosts` . Il faut remplacer *IP2* par l'adresse IP public de la VM qui va être utilisée pour deployer Apache2.
