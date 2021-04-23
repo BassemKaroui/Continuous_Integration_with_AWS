@@ -1,0 +1,35 @@
+version: '3.1'
+
+volumes:
+  Config:
+  Logs:
+  Data:
+  gitlab-runner-config:
+
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: gitlab
+    restart: always
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://3.238.70.255'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - Config:/etc/gitlab
+      - Logs:/var/log/gitlab
+      - Data:/var/opt/gitlab
+
+  gitlab-runner:
+    image: 'gitlab/gitlab-runner:latest'
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab-runner-config:/etc/gitlab-runner
+
+
+

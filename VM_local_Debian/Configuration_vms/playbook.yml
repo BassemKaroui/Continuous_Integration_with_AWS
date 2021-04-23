@@ -1,0 +1,83 @@
+---
+- name: Configure web service
+  hosts: web_server
+  remote_user: admin
+  become: yes
+
+  tasks:
+    - name: update le cache
+      apt:
+        update_cache: yes
+    - name: installation des packages
+      apt:
+        pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+        - lsb-release
+    - name: key verification
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+    - name: add repository
+      apt_repository: 
+        repo: deb https://download.docker.com/linux/debian buster stable
+        state: present
+    - name: install docker engine
+      apt:
+        update_cache: yes
+        pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    ## Creating a docker container
+    - name : install python-docker
+      apt:
+        name: python-docker
+        state: present
+    - name: Create the container
+      docker_container:
+        name: apache2
+        image: httpd
+        state: started
+        ports: 
+          - "80:80"
+          - "22:22"
+#####################################################
+- name: configure Gitlab service
+  hosts: gitlab_server
+  tasks:
+  # Installing docker
+    - name: update le cache
+      apt:
+        update_cache: yes
+    - name: installation des packages
+      apt:
+        pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+        - lsb-release
+    - name: key verification
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+    - name: add repository
+      apt_repository: 
+        repo: deb https://download.docker.com/linux/debian buster stable
+        state: present
+    - name: install docker engine
+      apt:
+        update_cache: yes
+        pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name : install python-docker
+      apt:
+        name: python-docker
+        state: present

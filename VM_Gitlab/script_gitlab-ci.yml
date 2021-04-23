@@ -1,0 +1,17 @@
+before_script:
+  - bundle init
+  - bundle add jekyll
+  - bundle install
+  - apt-get update -qq && apt-get install -y -qq sshpass
+
+stage_deploy:
+  artifacts:
+    paths:
+      - build/
+  only:
+    - master
+  script:
+    - bundle exec jekyll build -d build/
+    - export SSHPASS=$USER_PASS
+    - cd build/
+    - sshpass -e scp -o StrictHostKeyChecking=no -r /builds/root/projet_fondamental/build/* admin@34.205.92.150:/usr/local/apache2/htdocs/
