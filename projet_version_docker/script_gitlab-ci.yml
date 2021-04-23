@@ -1,0 +1,19 @@
+before_script:
+  - bundle init
+  - bundle add jekyll
+  - bundle install
+  - apt-get update -qq && apt-get install -y -qq sshpass
+
+stage_deploy:
+  artifacts:
+    paths:
+      - build/
+  only:
+    - master
+  script:
+    - bundle exec jekyll build -d build/
+    - export SSHPASS=$USER_PASS
+    - cd build/
+    - sshpass -e scp -P 22000 -o StrictHostKeyChecking=no -r /builds/root/test_project/html_files/build/* root@192.168.1.56:/usr/local/apache2/htdocs/
+
+    #specify the right user 'root' or something else e.g: 'admin'
