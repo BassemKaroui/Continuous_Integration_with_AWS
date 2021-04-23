@@ -17,6 +17,23 @@ web AWS.
 
 ## Description du repo
 
+```
+.
+├── LICENSE
+├── project_description.pdf
+├── projet_version_docker
+│   ├── apach2_container_config.md
+│   ├── docker-compose.yml
+│   └── script_gitlab-ci.yml
+├── README.md
+├── VM_Gitlab
+│   ├── CI_job.png
+│   ├── docker-compose.yml
+│   └── script_gitlab-ci.yml
+└── VM_local_Debian
+    ├── Configuration_vms
+    └── playbook.yml
+```
 
 ## Déroulement du projet
 
