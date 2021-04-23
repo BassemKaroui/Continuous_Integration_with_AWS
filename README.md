@@ -32,6 +32,7 @@ web AWS.
 │   └── script_gitlab-ci.yml
 └── VM_local_Debian
     ├── Configuration_vms
+    │   └── playbook.yml
     └── playbook.yml
 ```
 
