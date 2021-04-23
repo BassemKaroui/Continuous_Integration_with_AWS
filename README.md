@@ -7,11 +7,11 @@ Mise en place d’une chaîne d’intégration continue avec AWS.
 Installation automatisé d’un environnment de Labs via Ansible.
   * Une VM Gitlab.
   * Une VM serveur Web (apache2).
-  * Une VM en local type Linux. (virtualBox,WSL,GitBash,SSH).
+  * Une VM en local type Linux. (virtualBox, WSL, GitBash, SSH).
   
 - Seconde phase :
-Mise en place via GitLab du CI (continious integration) pour la démonstration nous cherchons a deployer
-de façon automatiser l’intégration de pages Web statiques. Le framework utilisé sera JEKYLL. (à decouvrire) Faire un test de jekyll avec un exemple de site.(il existe de nombreux exemples).
+Mise en place via GitLab du CI (continious integration) pour la démonstration nous cherchons à deployer
+de façon automatiser l’intégration de pages Web statiques. Le framework utilisé sera JEKYLL.
 Nous aimerions un déclenchement de l’integration des pages web (Jekyll) sur la machine virtuelle serveur
 web AWS.
 
@@ -70,7 +70,7 @@ Pour ce faire j'ai utilisé **docker-compose** que j'ai installé au préalable 
   
 * `sudo chmod +x /usr/local/bin/docker-compose`
 
-Puis j'ai lancé la commande `docker-compose up -d` en utilisant le fichier [docker-compose.yml](./VM_local_Debian/VM_Gitlab/docker-compose.yml).
+Puis j'ai lancé la commande `docker-compose up -d` en utilisant le fichier [docker-compose.yml](./VM_Gitlab/docker-compose.yml).
 
 Il faut attendre un peu le lancement de Gitlab. Une fois c'est fait il ne reste que d'**enregistrer** le *runner*. Mais avant de faire ça il faut d'abord se connecter à Gitlab via un navigateur web, créer un repository qu'on utilisera pour y mettre des pages html, et finalement récupérer le token.
 
@@ -81,7 +81,7 @@ Il faut d'abord configurer le security group de la VM Gitlab pour autoriser les 
 
 Maintenant on peut récupérer le token en ouvrant Gitlab dans le navigateur web avec l'URL : **http://localhost:8080** (Avec ceci, ça va faire un port forwarding au **http://3.238.70.255:80** et vu que le docker container de Gitlab a été créé avec un port forwarding 80:80 donc la connexion s'est bien établie.)
 
-Pour enregister le runner il faut établir une connexion SSH de la VM Gitlab et lancer la commande `docker-runner register` dans le container de gitlab-runner en utilisant la commande `docker exec -it docker-runner docker-runner register`.
+Pour enregister le runner il faut établir une connexion SSH de la VM Gitlab et lancer la commande `gitlab-runner register` dans le container de gitlab-runner en utilisant la commande `docker exec -it gitlab-runner gitlab-runner register` (le premier *gitlab-runner* est le nom du container et le second est la commande).
 Un TTY va se créer et on peut enregister le runner avec l'URL *http://3.238.70.255*, le token qu'on a récupéré, le *runner executor* (à savoir docker) et l'image qui sera utilisée par le runner executor (à savoir ruby:2.6).
 
 ### Etape 7
@@ -92,7 +92,7 @@ Le docker container que va créer le runner pour intégrer les pages web, va dev
 
 Une fois c'est fait, il faut définir ce mot de passe comme une variable d'environnement appelée *"SSHPASS"* dans Gitlab.
 
-Finalement, il faut créer un fichier [.gitlab-ci.yml](./VM_local_Debian/VM_Gitlab/script_gitlab-ci.yml) qui va démarrer le CI. À noter que le répertoire qui sert d'entrepôt des pages web dans le docker container est le *"/usr/local/apache2/htdocs/"* et non pas *"/var/www/html"*.
+Finalement, il faut créer un fichier [.gitlab-ci.yml](./VM_Gitlab/script_gitlab-ci.yml) qui va démarrer le CI. À noter que le répertoire qui sert d'entrepôt des pages web dans le docker container est le *"/usr/local/apache2/htdocs/"* et non pas *"/var/www/html"*.
 
 ### Test Réussi
 
